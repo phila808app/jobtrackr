@@ -1,6 +1,7 @@
 {
   "name": "jobtrackr",
   "version": "1.0.0",
+  "type": "module",
   "description": "A job application tracker web app. Users can register/log in, add job applications (company, role, status, date applied, notes",
   "main": "index.js",
   "scripts": {
@@ -11,7 +12,6 @@
     "url": "git+https://github.com/phila808app/jobtrackr.git"
   },
   "keywords": [],
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/phila808app/jobtrackr/issues"
   },
