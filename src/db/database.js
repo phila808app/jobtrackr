@@ -8,11 +8,15 @@ const pool = new Pool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     
-    
-    
 });
 
-const res = await pool.query('SELECT NOW()');
-console.log(res.rows[0]);
+try{
+    const res = await pool.query('SELECT NOW()');
+    console.log('Database connected', res.rows[0]);
+}catch(error){
+    console.log('Database connection error :', error)
+    throw error;
+}
 
-await pool.end();
+
+export default pool;
