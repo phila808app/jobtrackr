@@ -7,19 +7,38 @@ CREATE TABLE users(
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
---the trigger for updates
-CREATE OR REPLACE FUNCTION update_at_column()
+CREATE TYPE application_status AS ENUM('applied','interviewing','offer','rejected');
+CREATE TABLE applications(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    company VARCHAR(255) NOT NULL,
+    position VARCHAR(255) NOT NULL,
+    status application_status NOT NULL DEFAULT 'applied',
+    date_applied DATE NOT NULL DEFAULT CURRENT_DATE,
+    notes TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+
+);
+
+CREATE OR REPLACE FUNCTION set_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
     NEW.updated_at = now();
     RETURN NEW;
 END;
-$$ LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
-CREATE TRIGGER update_at_column
-BEFORE INSERT OR UPDATE ON users
+CREATE TRIGGER target_appl_update_at
+BEFORE UPDATE ON applications
 FOR EACH ROW
-EXECUTE FUNCTION users.update_at_column();
+EXECUTE FUNCTION set_updated_at();
 
-CREATE INDEX idx_users_email ON users(email);
-CREATE iNDEX idx_users_username ON users(username);
+CREATE TRIGGER target_users_update_at
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_at();
+
+CREATE INDEX idx_applications_user_id ON applications(user_id);
+CREATE INDEX idx_applications_company ON applications(company);
+CREATE INDEX idx_appl_date_applied ON applications(date_applied);
