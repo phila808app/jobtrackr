@@ -7,6 +7,7 @@ CREATE TABLE users(
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE UNIQUE INDEX users_email_lower_idx ON users (lower(email));
 CREATE TYPE application_status AS ENUM('applied','interviewing','offer','rejected');
 CREATE TABLE applications(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -39,6 +40,5 @@ BEFORE UPDATE ON users
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
 
-CREATE INDEX idx_applications_user_id ON applications(user_id);
-CREATE INDEX idx_applications_company ON applications(company);
-CREATE INDEX idx_appl_date_applied ON applications(date_applied);
+CREATE INDEX idx_applications_user_status ON applications (user_id, status);
+CREATE INDEX idx_applications_user_date   ON applications (user_id, date_applied DESC);
