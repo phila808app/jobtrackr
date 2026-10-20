@@ -1,6 +1,6 @@
 //starting the server
 
-import app from './app';
+import app from './app.js';
 import { config } from './config/env.js';
 
 const PORT = config.PORT || 5000;
