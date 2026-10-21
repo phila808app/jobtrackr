@@ -24,6 +24,7 @@ app.get('/', (req, res) =>{
 //api routes
 
 app.use('/api/users',usersRoutes);
+app.use('/api/users/:id',usersRoutes);
 
 
 export default app;
