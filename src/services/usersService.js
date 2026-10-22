@@ -36,10 +36,20 @@ export const getById = async (id) => {
   
 };
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export const getByEmail = async (email) =>{
 
     if(!email || email.trim() === ''){
-        throw new Error('Email address is required');
+        const error = new Error('Email address is required');
+        error.status = 400;
+        throw error;
+    }
+
+    if (!emailRegex.test(email)){
+        const error = new Error('Invalid email format');
+        error.status = 400;
+        throw error;
     }
     const user = await usersModel.findByEmail(email);
 
