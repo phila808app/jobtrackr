@@ -6,6 +6,8 @@ import morgan from 'morgan';
 //importing route files
 import usersRoutes from './routes/users.js';
 
+import { errorHandler,notFound } from './middleware/errorMiddleware.js';
+
 const app = express();
 
 //middleware
@@ -25,6 +27,12 @@ app.get('/', (req, res) =>{
 
 app.use('/api/users',usersRoutes);
 app.use('/api/users/:id',usersRoutes);
+
+
+//error handling
+
+app.use(notFound);
+app.use(errorHandler);
 
 
 export default app;
