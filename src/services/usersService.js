@@ -3,10 +3,14 @@ import * as usersModel from '../models/usersModel.js';
 
 export const getAll = async () =>{
     const rawData = await usersModel.findAll();
+
+    console.log(rawData);
     
     const safeUsers = rawData.map(({password_hash, ...user})=>
         user
     );
+
+
 
     const formatted_users = safeUsers.map((user)=>{
         return{
@@ -59,4 +63,18 @@ export const getByEmail = async (email) =>{
     const {id: userid,email: useremail,username,updated_at,created_at} = user;
     
     return {userid,username,email,updated_at,created_at};
+}
+
+export const create = async (userData) =>{
+
+    return usersModel.createUser(userData);
+};
+
+
+export const update = async (id, userData) => {
+    return await usersModel.updateUser(id,userData);
+}
+
+export const delete_user = async (id) =>{
+    return await usersModel.deleteUser(id);
 }
