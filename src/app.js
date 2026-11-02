@@ -30,6 +30,7 @@ app.use('/api/users',usersRoutes);
 app.use('/api/users/:id',usersRoutes);
 
 app.use('/api/applications',applicationRoutes);
+app.use('/api/applications/:id',applicationRoutes);
 
 
 //error handling
