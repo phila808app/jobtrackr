@@ -10,7 +10,7 @@ router.get('/users/:user_id',findByUserId);
 
 router.post('/',createApplication);
 router.delete('/:id',deleteApplication);
-router.put('/',updateApplication);
+router.put('/:id',updateApplication);
 
 
 
