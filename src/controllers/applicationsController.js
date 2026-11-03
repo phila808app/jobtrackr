@@ -53,7 +53,7 @@ export const createApplication = async (req,res,next) =>{
     try {
         
          const userData = {
-      user_id: req.body.user_id,   // or req.user.id if you have auth
+      user_id: req.body.user.id,   // or req.user.id if you have auth
       company: req.body.company,
       position: req.body.position,
     };

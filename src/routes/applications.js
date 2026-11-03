@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { updateApplication, getAllApplications,deleteApplication, findApplicationById,findByUserId,createApplication} from "../controllers/applicationsController.js";
+import { authenticate } from "../middleware/authMiddleware.js";
 
 const router = Router();
+
+router.use(authenticate);
 
 
 router.get('/',getAllApplications);

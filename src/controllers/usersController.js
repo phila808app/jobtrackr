@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+
+
 import * as usersService from '../services/usersService.js';
 
 
@@ -39,16 +42,46 @@ export const getUserById = async(req,res,next) =>{
 };
 
 
-export const createUser = async (req,res,next) =>{
-    try{
-    
+export const register = async (req,res,next) =>{
+    try{  
+
+        const {email,password,username } = req.body;
+        if(!email || !password || !username){
+            return res.status(400).json({message: 'username,email and password are required'})
+        }
+        
         const user =  await usersService.create(req.body);
-        res.status(200).json(user)
+        res.status(200).json(user);
+
 
     }catch(error){
         next(error);
     }
 };
+
+export const login = async (req,res,next) =>{
+    try{
+
+        const {email, password} = req.body;
+
+        if(!email || !password){
+            res.status(400).json({message: 'email and password are required'});
+        }
+
+        const user = await usersService.authenticateUser(email,password);
+        if(!user) return res.status(401).json({message: 'Invalid credentials'});
+
+    
+        const token = jwt.sign({
+            userId: user.id, username: user.username},
+            process.env.JWT_SECRET,
+            {expiresIn: '1h'}
+        );
+        res.json({token,user: {id:user.id, username: user.username}});
+    }catch(error){
+        next(error);
+    }
+}
 
 export const updateUser = async (req,res,next) =>{
     try {
