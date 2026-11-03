@@ -6,6 +6,7 @@ import morgan from 'morgan';
 //importing route files
 import usersRoutes from './routes/users.js';
 import applicationRoutes from './routes/applications.js';
+import authRoutes from './routes/authRoutes.js'
 
 import { errorHandler,notFound } from './middleware/errorMiddleware.js';
 
@@ -28,6 +29,8 @@ app.get('/', (req, res) =>{
 
 app.use('/api/users',usersRoutes);
 app.use('/api/users/:id',usersRoutes);
+
+app.use('/api/auth', authRoutes);
 
 app.use('/api/applications',applicationRoutes);
 app.use('/api/applications/:id',applicationRoutes);

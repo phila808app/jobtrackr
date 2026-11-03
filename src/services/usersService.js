@@ -1,4 +1,6 @@
+
 import * as usersModel from '../models/usersModel.js';
+import bcrypt from 'bcrypt';
 
 
 export const getAll = async () =>{
@@ -66,9 +68,14 @@ export const getByEmail = async (email) =>{
 }
 
 export const create = async (userData) =>{
+    
+    const saltRounds = 10;
+    const password_hash = await bcrypt.hash(userData.password, saltRounds);
 
-    return usersModel.createUser(userData);
+    const {password, ...rest} = userData
+    return usersModel.createUser({...rest, password_hash});
 };
+
 
 
 export const update = async (id, userData) => {
@@ -78,3 +85,18 @@ export const update = async (id, userData) => {
 export const delete_user = async (id) =>{
     return await usersModel.deleteUser(id);
 }
+
+export const authenticateUser = async (email, password) =>{
+
+    const user = await usersModel.findByEmail(email);
+    if(!user) return null;
+
+    const isValid = await bcrypt.compare(password, user.password_hash);
+    if(!isValid) return null;
+
+
+    const {password_hash, ...safeUser} = user
+    return safeUser;
+}
+
+

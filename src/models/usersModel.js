@@ -1,5 +1,6 @@
 import pool from '../db/database.js';
 
+
 const user_details = 'id,username,created_at,updated_at';
 
 // Find all users
