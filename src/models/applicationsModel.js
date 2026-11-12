@@ -51,9 +51,9 @@ export const updateApplication = async (userData) =>{
     return rows[0];
 };
 
-export const deleteApplication = async (id) =>{
+export const deleteApplication = async (user_id,id) =>{
     const result = await pool.query(`
-        DELETE FROM applications WHERE id = $1`,[id]
+        DELETE FROM applications WHERE id = $1 AND user_id = $2`,[id,user_id]
     );
     return result.rowCount > 0;
 };

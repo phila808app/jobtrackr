@@ -89,7 +89,7 @@ export const updateApplication = async (req,res,next) =>{
 export const deleteApplication = async (req,res,next) =>{
 
     try{
-        const deleted = await applicationsService.deleteApplication(req.params.id);
+        const deleted = await applicationsService.deleteApplication(req.params.id, req.params.user_id);
         if (!deleted) {
             return res.status(404).json({message: 'Application not found'})
         }
