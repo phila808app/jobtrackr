@@ -6,13 +6,9 @@ import bcrypt from 'bcrypt';
 export const getAll = async () =>{
     const rawData = await usersModel.findAll();
 
-    console.log(rawData);
-    
     const safeUsers = rawData.map(({password_hash, ...user})=>
         user
     );
-
-
 
     const formatted_users = safeUsers.map((user)=>{
         return{
@@ -83,6 +79,8 @@ export const update = async (id, userData) => {
 }
 
 export const delete_user = async (id) =>{
+
+    
     return await usersModel.deleteUser(id);
 }
 

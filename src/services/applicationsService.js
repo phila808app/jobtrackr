@@ -33,7 +33,16 @@ export const updateApplication = async (userData) =>{
     
 }
 
-export const deleteApplication = async (id) =>{
+export const deleteApplication = async (user_id, id) =>{
+
+    const application = await applicationsModel.findApplicationById(id);
+    if(!application){
+        throw new Error('Application not found');
+    }
+
+    if (application.user_id !== user_id ){
+        throw new Error('you cannot delete this application'); 
+    }
 
     return await applicationsModel.deleteApplication(id);
 
